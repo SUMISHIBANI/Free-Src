@@ -1,0 +1,29 @@
+name: Render on VPS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  render:
+    runs-on: self-hosted  # VPS runner pe run karega
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: |
+          apt update
+          apt install -y ffmpeg blender  # Required packages
+
+      - name: Run Render Task
+        run: |
+          blender -b scene.blend -o //output -F PNG -x 1 -a
+
+      - name: Upload Rendered Output
+        uses: actions/upload-artifact@v4
+        with:
+          name: render-output
+          path: output/
