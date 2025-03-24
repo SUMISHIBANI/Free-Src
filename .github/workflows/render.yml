@@ -4,23 +4,23 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:  # Manual trigger
+  workflow_dispatch:  # Manually trigger karne ke liye
 
 jobs:
   render:
-    runs-on: self-hosted  # VPS runner pe run karega
+    runs-on: self-hosted  # VPS ke runner pe chalega
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Install Dependencies
         run: |
-          apt update
-          apt install -y ffmpeg blender  # Required packages
+          sudo apt update
+          sudo apt install -y ffmpeg blender  # Rendering ke liye packages install karega
 
-      - name: Run Render Task
+      - name: Run Blender Render Task
         run: |
-          blender -b scene.blend -o //output -F PNG -x 1 -a
+          blender -b scene.blend -o //output -F PNG -x 1 -a  # Scene render karega
 
       - name: Upload Rendered Output
         uses: actions/upload-artifact@v4
